@@ -40,27 +40,60 @@ public class AwsSdkAppApplication {
 				
 				
 				
-				final AmazonIdentityManagement iam =
-	            AmazonIdentityManagementClientBuilder.defaultClient();
+//				final AmazonIdentityManagement iam =
+//	            AmazonIdentityManagementClientBuilder.defaultClient();
+//
+//	        boolean done = false;
+//	        ListUsersRequest request = new ListUsersRequest();
+//
+//	        while(!done) {
+//	            ListUsersResult response = iam.listUsers(request);
+//
+//	            for(User user : response.getUsers()) {
+//	            	System.out.format("\n Retrieved user : %s", user.getUserName());
+//	                System.out.format("\n Password last changed : %s", user.getPasswordLastUsed());
+//	               
+//	            }
+//
+//	            request.setMarker(response.getMarker());
+//
+//	            if(!response.getIsTruncated()) {
+//	                done = true;
+//	            }
+//	        }
+		
+		
+		
+		final String USAGE =
+        "To run this example, supply a group id\n" +
+        "Ex: DescribeSecurityGroups <group-id>\n";
 
-	        boolean done = false;
-	        ListUsersRequest request = new ListUsersRequest();
+    if (args.length != 1) {
+        System.out.println(USAGE);
+        System.exit(1);
+    }
 
-	        while(!done) {
-	            ListUsersResult response = iam.listUsers(request);
+    String group_id = args[0];
 
-	            for(User user : response.getUsers()) {
-	            	System.out.format("\n Retrieved user : %s", user.getUserName());
-	                System.out.format("\n Password last changed : %s", user.getPasswordLastUsed());
-	               
-	            }
+    final AmazonEC2 ec2 = AmazonEC2ClientBuilder.defaultClient();
 
-	            request.setMarker(response.getMarker());
+    DescribeSecurityGroupsRequest request =
+        new DescribeSecurityGroupsRequest()
+            .withGroupIds();
 
-	            if(!response.getIsTruncated()) {
-	                done = true;
-	            }
-	        }
+    DescribeSecurityGroupsResult response =
+        ec2.describeSecurityGroups();
+
+    for(SecurityGroup group : response.getSecurityGroups()) {
+        System.out.printf(
+            "\n Found security group with id %s, " +
+            "\n vpc id %s " +
+            "\n and description %s",
+            group.getGroupId(),
+            group.getVpcId(),
+            group.getDescription());
+    }
+
 				
 		
 	}
