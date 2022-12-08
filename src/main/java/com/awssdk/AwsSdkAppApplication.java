@@ -1,23 +1,8 @@
 package com.awssdk;
 
-import java.util.List;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.amazonaws.services.ec2.AmazonEC2;
-import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
-import com.amazonaws.services.ec2.model.DescribeSecurityGroupsRequest;
-import com.amazonaws.services.ec2.model.DescribeSecurityGroupsResult;
-import com.amazonaws.services.ec2.model.SecurityGroup;
-import com.amazonaws.services.identitymanagement.AmazonIdentityManagement;
-import com.amazonaws.services.identitymanagement.AmazonIdentityManagementClientBuilder;
-import com.amazonaws.services.identitymanagement.model.ListUsersRequest;
-import com.amazonaws.services.identitymanagement.model.ListUsersResult;
-import com.amazonaws.services.identitymanagement.model.User;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.Bucket;
 
 @SpringBootApplication
 public class AwsSdkAppApplication {
@@ -25,76 +10,20 @@ public class AwsSdkAppApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AwsSdkAppApplication.class, args);
 		
-				//Creating amazon s3 client
-//				final AmazonS3 s3 = AmazonS3ClientBuilder.standard() .build();
-				//Listing all the buckets
-//				List<Bucket> buckets = s3.listBuckets();
-
-				//Iterating through the bucket
-//				buckets.stream().forEach(bucket -> {
-//				System.out.println("Bucket Name : " + bucket.getName() + ", "
-//						+"\nBucket Owner : " +bucket.getOwner() .getDisplayName ()
-//				+",\nBucket Creation Date : " + bucket.getCreationDate());
-//
-//				});
-				
-				
-				
-//				final AmazonIdentityManagement iam =
-//	            AmazonIdentityManagementClientBuilder.defaultClient();
-//
-//	        boolean done = false;
-//	        ListUsersRequest request = new ListUsersRequest();
-//
-//	        while(!done) {
-//	            ListUsersResult response = iam.listUsers(request);
-//
-//	            for(User user : response.getUsers()) {
-//	            	System.out.format("\n Retrieved user : %s", user.getUserName());
-//	                System.out.format("\n Password last changed : %s", user.getPasswordLastUsed());
-//	               
-//	            }
-//
-//	            request.setMarker(response.getMarker());
-//
-//	            if(!response.getIsTruncated()) {
-//	                done = true;
-//	            }
-//	        }
+		System.out.println("************ The list of buckts ***************");
 		
-		
-		
-		final String USAGE =
-        "To run this example, supply a group id\n" +
-        "Ex: DescribeSecurityGroups <group-id>\n";
-
-    if (args.length != 1) {
-        System.out.println(USAGE);
-        System.exit(1);
-    }
-
-    String group_id = args[0];
-
-    final AmazonEC2 ec2 = AmazonEC2ClientBuilder.defaultClient();
-
-    DescribeSecurityGroupsRequest request =
-        new DescribeSecurityGroupsRequest()
-            .withGroupIds();
-
-    DescribeSecurityGroupsResult response =
-        ec2.describeSecurityGroups();
-
-    for(SecurityGroup group : response.getSecurityGroups()) {
-        System.out.printf(
-            "\n Found security group with id %s, " +
-            "\n vpc id %s " +
-            "\n and description %s",
-            group.getGroupId(),
-            group.getVpcId(),
-            group.getDescription());
-    }
-
+		ListOfBucket listOfBucket = new ListOfBucket();
+		listOfBucket.getAllBucket();
 				
+		System.out.println("*********************List of user ***************************");
+				
+		ListOfUser listOfUser = new ListOfUser();
+		listOfUser.getAllUser();
+		
+		System.out.println("\n********************** List of security groups ****************");
+		
+		ListOfSecurityGroup listOfSecurityGroup = new ListOfSecurityGroup();
+		listOfSecurityGroup.getAllSecurityGroup();
 		
 	}
 }
