@@ -26,17 +26,41 @@ public class AwsSdkAppApplication {
 		SpringApplication.run(AwsSdkAppApplication.class, args);
 		
 				//Creating amazon s3 client
-				final AmazonS3 s3 = AmazonS3ClientBuilder.standard() .build();
+//				final AmazonS3 s3 = AmazonS3ClientBuilder.standard() .build();
 				//Listing all the buckets
-				List<Bucket> buckets = s3.listBuckets();
+//				List<Bucket> buckets = s3.listBuckets();
 
 				//Iterating through the bucket
-				buckets.stream().forEach(bucket -> {
-				System.out.println("Bucket Name : " + bucket.getName() + ", "
-						+"\nBucket Owner : " +bucket.getOwner() .getDisplayName ()
-				+",\nBucket Creation Date : " + bucket.getCreationDate());
+//				buckets.stream().forEach(bucket -> {
+//				System.out.println("Bucket Name : " + bucket.getName() + ", "
+//						+"\nBucket Owner : " +bucket.getOwner() .getDisplayName ()
+//				+",\nBucket Creation Date : " + bucket.getCreationDate());
+//
+//				});
+				
+				
+				
+				final AmazonIdentityManagement iam =
+	            AmazonIdentityManagementClientBuilder.defaultClient();
 
-				});
+	        boolean done = false;
+	        ListUsersRequest request = new ListUsersRequest();
+
+	        while(!done) {
+	            ListUsersResult response = iam.listUsers(request);
+
+	            for(User user : response.getUsers()) {
+	            	System.out.format("\n Retrieved user : %s", user.getUserName());
+	                System.out.format("\n Password last changed : %s", user.getPasswordLastUsed());
+	               
+	            }
+
+	            request.setMarker(response.getMarker());
+
+	            if(!response.getIsTruncated()) {
+	                done = true;
+	            }
+	        }
 				
 		
 	}
