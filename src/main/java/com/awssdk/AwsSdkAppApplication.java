@@ -25,5 +25,9 @@ public class AwsSdkAppApplication {
 		ListOfSecurityGroup listOfSecurityGroup = new ListOfSecurityGroup();
 		listOfSecurityGroup.getAllSecurityGroup();
 		
+		System.out.println("\n********************** Printing employee detail ****************");
+		MyTest myTest = new MyTest();
+		myTest.getEmployee();
+		
 	}
 }
